@@ -87,10 +87,10 @@ class Scanner {
       Lox.error(line, "Unterminated string.");
       return;
     }
-
+    // We've reached the closing " thus breaking out of the while peek() != '"'. Need to push past it.
     advance();
-
-    String value = source.substring(start + 1, current - 1);
+    // Trim the quotes off.
+    String value = source.substring(start + 1, current - 1); // Remember start doesn't reset value until scanTokens' while loop. start and current are both '"'.
     addToken(STRING, value);
   }
   
