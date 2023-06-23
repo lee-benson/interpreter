@@ -73,9 +73,30 @@ class Scanner {
         break;
       case '"': string(); break;
       default:
-        Lox.error(line, "Unexpected character.");
+        // Tedious to look for each case of the decimal number instead just default it
+        if (isDigit(c)) {
+          number();
+        } else {
+          Lox.error(line, "Unexpected character.");
+        }
         break;
     }
+  }
+
+  // Check for digit
+  private boolean isDigit(char c) {
+    return c >= '0' && c <= '9';
+  }
+
+  private void number() {
+    while (isDigit(peek())) advance();
+    // Peek checks if we're at the end of source code. If not, check if decimal.
+    if (peek() == '.' && isDigit(peekNext())) {
+      // start is on '.' need to move past it:
+      advance();
+      while (isDigit(peek())) advance();
+    }
+    addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
   }
 
   private void string() {
@@ -93,6 +114,11 @@ class Scanner {
     String value = source.substring(start + 1, current - 1); // Remember start doesn't reset value until scanTokens' while loop. start and current are both '"'.
     addToken(STRING, value);
   }
+
+  private char peekNext() {
+    if (current + 1 >= source.length()) return '\0';
+    return source.charAt(current + 1); //current++ would increment prev value by 1 but would still be expressed as the prev value. 
+  }
   
   private boolean match(char expected) {
     if (isAtEnd()) return false;
@@ -102,7 +128,7 @@ class Scanner {
     return true;
   }
 
-  // peek 'looks ahead' and checks if we're at the end of the program (or was it lexeme)
+  // peek 'looks ahead' and checks if we're at the end of the program 
   private char peek() {
     if (isAtEnd()) return '\0';
     return source.charAt(current);
