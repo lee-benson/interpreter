@@ -13,6 +13,27 @@ class Scanner {
   private int start = 0;
   private int current = 0;
   private int line = 1;
+  // Make a map for checking if the identifier is a reserved word or not
+  private static final Map<String, TokenType> keywords;
+  
+  static {
+    keywords.put("and", AND);
+    keywords.put("class", CLASS);
+    keywords.put("else", ELSE);
+    keywords.put("false", FALSE);
+    keywords.put("for", FOR);
+    keywords.put("fun", FUN);
+    keywords.put("if", IF);
+    keywords.put("nil", NIL);
+    keywords.put("or", OR);
+    keywords.put("print", PRINT);
+    keywords.put("return", RETURN);
+    keywords.put("super", SUPER);
+    keywords.put("this", THIS);
+    keywords.put("true", TRUE);
+    keywords.put("var", VAR);
+    keywords.put("while", WHILE);
+  }
 
   Scanner(String source) {
     this.source = source;
