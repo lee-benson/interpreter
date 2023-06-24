@@ -76,18 +76,26 @@ class Scanner {
         // Tedious to look for each case of the decimal number instead just default it
         if (isDigit(c)) {
           number();
-        } else {
+        } else if (isAlpha(c)) {
+          identifier();
+        }else {
           Lox.error(line, "Unexpected character.");
         }
         break;
     }
   }
 
+  private void identifier() {
+    while (isAlphaNumeric(peek())) advance();
+
+    addToken(IDENTIFIER) 
+  }
+  
   // Check for digit
   private boolean isDigit(char c) {
     return c >= '0' && c <= '9';
   }
-
+  
   private void number() {
     while (isDigit(peek())) advance();
     // Peek checks if we're at the end of source code. If not, check if decimal.
@@ -98,7 +106,7 @@ class Scanner {
     }
     addToken(NUMBER, Double.parseDouble(source.substring(start, current)));
   }
-
+  
   private void string() {
     while (peek() != '"' && !isAtEnd()) {
       if (peek() == '\n') line ++;
@@ -114,12 +122,23 @@ class Scanner {
     String value = source.substring(start + 1, current - 1); // Remember start doesn't reset value until scanTokens' while loop. start and current are both '"'.
     addToken(STRING, value);
   }
-
+  
   private char peekNext() {
     if (current + 1 >= source.length()) return '\0';
     return source.charAt(current + 1); //current++ would increment prev value by 1 but would still be expressed as the prev value. 
   }
   
+  // Check for alphabet
+  private boolean isAlpha(char c) {
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+            c == '_';
+  }
+  // If and only if we're dealing with identifiers do we then check if alphanumeric
+  private boolean isAlphaNumeric(char c) {
+    return isAlpha(c) || isDigit(c)
+  }
+
   private boolean match(char expected) {
     if (isAtEnd()) return false;
     if (source.charAt(current) != expected) return false;
