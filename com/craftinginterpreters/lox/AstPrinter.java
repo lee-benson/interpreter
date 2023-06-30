@@ -24,5 +24,19 @@ class AstPrinter implements Expr.Visitor<String> { // Implements the visitors
     return parenthesize(expr.operator.lexeme, expr.right);
 
   }
+
+  private String parenthesize(String name, Expr... exprs) {
+    StringBuilder builder = new StringBuilder();
+
+    builder.append("(").append(name);
+    for (Expr expr: exprs) {
+      builder.append(" ");
+      builder.append(expr.accept(this));
+    }
+    builder.append(")");
+
+    return builder.toString(); 
+  }
 }
 
+// The code block's purpose is to print out an AST tree so we know what exactly is being printed out. Debugging similar to console.log().
