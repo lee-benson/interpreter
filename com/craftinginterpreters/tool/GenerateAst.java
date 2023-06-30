@@ -68,6 +68,14 @@ public class GenerateAst {
 
     writer.println("    }");
 
+    //Visitor patterns (basically the use of polymorphism to inject new methods into classes more easily)
+    writer.println();
+    writer.println("    @Override");
+    writer.println("    <R> R accept(Visitor<R> visitor) {");
+    writer.println("      return visitor.visit" + className + baseName + "(this);");
+    writer.println("    }");
+
+
     //Fields
     writer.println();
     for (String field : fields) {
