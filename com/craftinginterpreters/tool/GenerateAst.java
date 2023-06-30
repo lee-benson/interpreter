@@ -37,6 +37,10 @@ public class GenerateAst {
       String fields = type.split(":")[1].trim();
       defineType(writer, baseName, className, fields);
     }
+
+    // Adding the base accept() method. The accept() will inject the interface (a bag of methods) into 'each' class
+    writer.println();
+    writer.println("  abstract <R> R accept(Visitor<R> visitor);");
     writer.println("}");
     writer.println();
     }
