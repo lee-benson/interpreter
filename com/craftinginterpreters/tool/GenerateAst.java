@@ -86,3 +86,5 @@ public class GenerateAst {
   }
 }
 
+// AST classes are like blueprints for a dish. Their nodes are specific ingredients (derived from parsed tokens). 
+// Parser is the head chef who with the help of specialized chefs (visitors) builds out the AST dish.
