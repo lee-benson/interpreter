@@ -27,7 +27,7 @@ class Parser {
 
     return expr;
   }
-
+  // helps indicate when you'll exit the loop by identifying ! or ==
   private boolean match(TokenType... types) {
     for (TokenType type : types) {
       if (check(types)) {
@@ -36,5 +36,27 @@ class Parser {
       }
     }
     return false;
+  }
+
+  private boolean check(TokenType type) {
+    if (isAtEnd()) return false;
+    return peek().type == type;
+  }
+
+  private Token advance() {
+    if (!isAtEnd()) current++;
+    return previous();
+  }
+
+  private boolean isAtEnd(){
+    return peek().type == EOF;
+  }
+
+  private Token peek() {
+    return tokens.get(current);
+  }
+
+  private Token previous() {
+    return tokens.get(current - 1);
   }
 }
